@@ -1,0 +1,35 @@
+name: Check llms.txt
+
+on:
+  push:
+    paths:
+      - 'llms.txt'
+  pull_request:
+    paths:
+      - 'llms.txt'
+
+jobs:
+  lint-llms:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Ensure llms.txt exists
+        run: |
+          if [ ! -f llms.txt ]; then
+            echo "ERROR: llms.txt not found!"
+            exit 1
+          fi
+
+      - name: Check required sections
+        run: |
+          required_sections=("Overview" "API Endpoints" "Response formats" "Service policies" "Maintenance metadata")
+          for section in "${required_sections[@]}"; do
+            if ! grep -q "## $section" llms.txt; then
+              echo "ERROR: Section ## $section is missing!"
+              exit 1
+            fi
+          done
+
+      - name: Success
+        run: echo "llms.txt exists and has all required sections ✅"
