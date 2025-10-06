@@ -1,0 +1,58 @@
+# ipify
+
+> ipify is a simple, open-source public IP address API that returns the caller's public IP (IPv4/IPv6). It provides plain text, JSON, and JSONP formats and is widely used for lightweight network checks.
+
+## Overview
+- Simple "what is my IP" API.
+- Open source and production-grade; quick, low-latency responses.
+- Supports plain text, JSON, and JSONP response formats.
+
+## API Endpoints
+- `https://api.ipify.org` — plain text (default)
+- `https://api6.ipify.org` — IPv6-first endpoint (returns IPv6 if available)
+- `https://api64.ipify.org` — universal endpoint (IPv4 or IPv6)
+- Query parameters:
+  - `?format=json` → JSON: {"ip":"1.2.3.4"}
+  - `?callback=yourFunctionName` → JSONP: yourFunctionName({...})
+
+## Quick usage examples
+
+# Plain text (curl)
+curl https://api.ipify.org
+
+# JSON (curl)
+curl 'https://api.ipify.org?format=json'
+
+# JSONP (curl, browser)
+curl 'https://api.ipify.org?format=json&callback=mycb'
+
+# Node.js / fetch
+node -e "fetch('https://api.ipify.org?format=json').then(r=>r.json()).then(d=>console.log(d.ip)).catch(e=>console.error(e));"
+
+## Response formats
+- text/plain (default, raw IP)
+- application/json (?format=json, response: {"ip":"..."})
+- application/javascript (?callback=yourFunc, JSONP callback)
+
+## Service policies & guarantees
+- "No visitor information is ever logged." — ipify.org (verify current policy before production use)
+- Open source and community maintained — see GitHub
+- High availability; lightweight, low-latency responses
+
+## Fallbacks, caching & client guidance
+- Use `https://api64.ipify.org` as a universal fallback
+- Cache IP locally for a few minutes to reduce requests
+- Backoff on HTTP 429 responses; retry with exponential backoff
+- Use JSONP if calling from a browser and CORS blocks direct JSON
+
+## Libraries & integrations
+- Go client: https://github.com/rdegges/go-ipify
+- npm: ipify (sindresorhus) and ipify-cli
+
+## Maintenance metadata & contact
+- Last updated: 2025-10-06
+- Review cadence: quarterly
+- Contribute / issues: 
+  - https://github.com/rdegges/ipify
+  - https://github.com/sindresorhus/ipify
+- Robots & sitemap: Place this file at site root as `/llms.txt`. Agents should follow robots.txt and sitemap.xml rules.
